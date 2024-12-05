@@ -1,0 +1,41 @@
+{
+  "name": "@ice/plugin-pha",
+  "version": "3.0.4",
+  "description": "ice.js plugin for PHA.",
+  "license": "MIT",
+  "type": "module",
+  "main": "./esm/index.js",
+  "types": "./esm/index.d.ts",
+  "files": [
+    "esm",
+    "!esm/**/*.map",
+    "template",
+    "*.d.ts"
+  ],
+  "scripts": {
+    "watch": "tsc -w --sourceMap",
+    "build": "tsc"
+  },
+  "dependencies": {
+    "@remix-run/router": "^1.14.2",
+    "chalk": "^4.0.0",
+    "consola": "^2.15.3",
+    "humps": "^2.0.1",
+    "lodash.clonedeep": "^4.5.0",
+    "htmlparser2": "^8.0.1"
+  },
+  "devDependencies": {
+    "@ice/app": "^3.3.2",
+    "build-scripts": "^2.1.2-0",
+    "esbuild": "^0.17.16",
+    "webpack": "^5.88.0",
+    "webpack-dev-server": "4.15.0"
+  },
+  "repository": {
+    "type": "http",
+    "url": "https://github.com/alibaba/ice/tree/master/packages/plugin-pha"
+  },
+  "publishConfig": {
+    "access": "public"
+  }
+}

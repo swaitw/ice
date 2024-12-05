@@ -1,21 +1,24 @@
 {
-  "name": "example-icestark-layout",
-  "description": "icestark layout",
+  "name": "@examples/icestark-framework",
+  "private": true,
+  "version": "1.0.0",
+  "scripts": {
+    "start": "ice start",
+    "build": "ice build"
+  },
+  "description": "",
+  "author": "",
+  "license": "MIT",
   "dependencies": {
-    "@alifd/next": "^1.19.12",
-    "@icedesign/theme": "^1.2.0",
-    "react": "^16.4.1",
-    "react-dom": "^16.4.1"
+    "@ice/app": "workspace:*",
+    "@ice/stark-app": "^1.5.0",
+    "@ice/plugin-icestark": "workspace:*",
+    "@ice/runtime": "workspace:*",
+    "react": "^18.0.0",
+    "react-dom": "^18.0.0"
   },
   "devDependencies": {
-    "@types/react": "^16.9.13",
-    "@types/react-dom": "^16.9.4"
-  },
-  "scripts": {
-    "start": "../../packages/icejs/bin/ice-cli.js start",
-    "build": "../../packages/icejs/bin/ice-cli.js build"
-  },
-  "engines": {
-    "node": ">=8.0.0"
+    "@types/react": "^18.0.0",
+    "@types/react-dom": "^18.0.2"
   }
 }

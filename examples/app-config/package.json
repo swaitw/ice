@@ -1,0 +1,24 @@
+{
+  "name": "@examples/app-config",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "start": "ice start",
+    "build": "ice build",
+    "build:splitChunks": "ice build --config splitChunks.config.mts"
+  },
+  "description": "",
+  "author": "",
+  "license": "MIT",
+  "dependencies": {
+    "@ice/app": "workspace:*",
+    "@ice/plugin-externals": "workspace:*",
+    "@ice/runtime": "workspace:*",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0"
+  },
+  "devDependencies": {
+    "@types/react": "^18.0.0",
+    "@types/react-dom": "^18.0.2"
+  }
+}

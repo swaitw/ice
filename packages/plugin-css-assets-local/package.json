@@ -1,22 +1,37 @@
 {
-  "name": "build-plugin-css-assets-local",
-  "version": "0.1.0",
-  "description": "build-scripts plugin for localize CSS assets",
-  "main": "lib/index.js",
-  "scripts": {
-    "test": "echo \"test\""
-  },
-  "author": "",
+  "name": "@ice/plugin-css-assets-local",
+  "version": "1.0.2",
   "license": "MIT",
   "repository": {
     "type": "http",
     "url": "https://github.com/alibaba/ice/tree/master/packages/plugin-css-assets-local"
   },
-  "dependencies": {
-    "extract-css-assets-webpack-plugin": "^0.2.5"
-  },
+  "type": "module",
   "files": [
-    "lib",
-    "!lib/**/*.map"
-  ]
+    "esm",
+    "!esm/**/*.map"
+  ],
+  "main": "./esm/index.js",
+  "types": "./esm/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./esm/index.d.ts",
+      "import": "./esm/index.js",
+      "default": "./esm/index.js"
+    }
+  },
+  "dependencies": {
+    "extract-css-assets-webpack-plugin": "^0.2.10",
+    "consola": "^2.15.3"
+  },
+  "devDependencies": {
+    "@ice/app": "^3.3.2"
+  },
+  "scripts": {
+    "watch": "tsc -w --sourceMap",
+    "build": "tsc"
+  },
+  "publishConfig": {
+    "access": "public"
+  }
 }

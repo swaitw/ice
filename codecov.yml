@@ -1,16 +1,9 @@
-
-comment:
-  layout: "reach, diff, flags, files"
-  behavior: default
-  require_changes: false
-  require_base: no
-  require_head: yes
-  branches:
-    - "master"
-
 coverage:
   status:
+    patch: off
     project:
       default:
-        threshold: 90%
-    patch: off
+        threshold: 5%
+        
+github_checks:
+  annotations: false

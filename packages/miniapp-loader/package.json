@@ -1,0 +1,29 @@
+{
+  "name": "@ice/miniapp-loader",
+  "version": "1.2.0",
+  "description": "webpack loader for miniapps.",
+  "main": "./lib/page.js",
+  "files": [
+    "lib",
+    "!lib/**/*.map"
+  ],
+  "author": "ICE",
+  "license": "MIT",
+  "repository": "alibaba/ice",
+  "bugs": "https://github.com/alibaba/ice/issues",
+  "homepage": "https://v3.ice.work",
+  "scripts": {
+    "watch": "tsc -w --sourceMap",
+    "build": "tsc"
+  },
+  "sideEffects": false,
+  "dependencies": {
+    "@ice/bundles": "workspace:^"
+  },
+  "devDependencies": {
+    "webpack": "^5.88.0"
+  },
+  "publishConfig": {
+    "access": "public"
+  }
+}

@@ -1,162 +1,81 @@
-import * as path from 'path';
-import * as glob from 'glob';
-import * as fse from 'fs-extra';
-import type { IPlugin, Json } from 'build-scripts';
-import htmlPlugin from 'vite-plugin-index-html';
-import checkEntryFile from './checkEntryFile';
-import lifecyclePlugin from './lifecyclePlugin';
-import { getEntryForSPA } from './entryHelper';
+import type { Plugin } from '@ice/app/types';
 
-const plugin: IPlugin = async ({ onGetWebpackConfig, getValue, applyMethod, modifyUserConfig, context, log }, options = {}) => {
-  const { uniqueName, umd, library, omitSetLibraryName = false, type } = options as Json;
-  const { rootDir, webpack, pkg, userConfig } = context;
-  const { vite, mpa } = userConfig;
+interface PluginOptions {
+  type: 'child' | 'framework';
+  library?: string;
+}
 
-  let appType = type;
+const PLUGIN_NAME = '@ice/plugin-icestark';
+const plugin: Plugin<PluginOptions> = ({ type, library }) => ({
+  name: PLUGIN_NAME,
+  setup: ({ onGetConfig, context, generator, modifyUserConfig }) => {
+    onGetConfig((config) => {
+      config.configureWebpack ??= [];
+      config.configureWebpack.push((webpackConfig) => {
+        if (type === 'child') {
+          const { pkg } = context;
+          webpackConfig.output.library = library || pkg.name as string || 'microApp';
+          webpackConfig.output.libraryTarget = 'umd';
+        }
+        return webpackConfig;
+      });
+      return config;
+    });
+    if (type === 'child') {
+      // Modify basename when render as a child app.
+      generator.modifyRenderData((data) => {
+        return {
+          ...data,
+          basename: `(typeof window !== 'undefined' && window.ICESTARK?.basename || ${data.basename})`,
+        };
+      });
+      generator.addEntryCode(() => {
+        return `let root;
+if (!window.ICESTARK?.root && !window.__POWERED_BY_QIANKUN__) {
+  root = render();
+}
 
-  if (!type) {
-    log.warn(`
-    [plugin-icestark]: type should to be included, which we truly suggested. see https://ice.work/docs/guide/advanced/icestark/#type-1
-  `);
-  }
+// For qiankun lifecycle validation.
+export async function bootstrap(props) {
+  await app?.icestark?.bootstrap?.(props);
+}
 
-  if (umd || library) {
-    if (appType === 'framework') {
-      log.warn(`
-      [plugin-icestark]: Option umd and library should not be setted where type is 'framework'.
-      see https://ice.work/docs/guide/advanced/icestark
-    `);
-    }
-
-    if (!appType) {
-      appType = 'child';
-
-      log.warn(`
-      [plugin-icestark]: supposed to be child type. and it is more preferable set type option with child.
-      see https://ice.work/docs/guide/advanced/icestark
-    `);
-    }
-  }
-
-  if (!appType) {
-    appType = 'framework';
-  }
-
-  const iceTempPath = getValue<string>('TEMP_PATH') || path.join(rootDir, '.ice');
-  const isWebpack5 = (webpack as any).version?.startsWith('5');
-
-  const hasDefaultLayout = glob.sync(`${path.join(rootDir, 'src/layouts/index')}.@(ts?(x)|js?(x))`).length;
-
-  if (vite && umd) {
-    // FIXME: support UMD format in vite mode
-    log.warn('[plugin-icestark]: umd do not work since vite is enabled. Just remove umd from build-plugin-icestark options.');
-  }
-
-  // copy runtime/Layout.tsx to .ice while it can not been analyzed with alias `$ice/Layout`
-  const layoutSource = path.join(__dirname, '../src/runtime/Layout.tsx');
-  const layoutPath = path.join(iceTempPath, 'plugins/icestark/pluginRuntime/runtime/Layout.tsx');
-  applyMethod('addRenderFile', layoutSource, layoutPath);
-
-  onGetWebpackConfig((config) => {
-    const entries = config.entryPoints.entries();
-
-    // Only micro-applications need to be compiled to specific format.
-    if (appType === 'child' && vite) {
-
-      if (mpa || Object.keys(entries).length > 1) {
-        log.warn('[plugin-icestark]: MPA is not supported currently.');
+export async function mount(props) {
+  await app?.icestark?.mount?.(props);
+  // Avoid remount when app mount in other micro app framework.
+  if (!root) {
+    // When app mount in qiankun, do not use props passed by.
+    // Props of container if conflict with render node in ice, it may cause node overwritten.
+    let runtimeOptions = props;
+    if (props.singleSpa) {
+      const iceContainer = props.container?.querySelector('#ice-container');
+      if (iceContainer) {
+        runtimeOptions = {...props, container: iceContainer };
       } else {
-        // Get the last file as the actual entry
-        const entryFile = getEntryForSPA(entries);
-        modifyUserConfig('vite.plugins', [
-          htmlPlugin({
-            entry: entryFile,
-            template: path.resolve(rootDir, 'public/index.html'),
-            preserveEntrySignatures: 'exports-only'
-          }),
-          lifecyclePlugin(entryFile)
-        ], { deepmerge: true });
+        const ele = document.createElement('div');
+        ele.id = 'ice-container';
+        props.container.appendChild(ele);
+        runtimeOptions = {...props, container: ele };
       }
     }
-
-    config
-      .plugin('DefinePlugin')
-      .tap(([args]) => [
-        {
-          ...args,
-          'process.env.__FRAMEWORK_VERSION__': JSON.stringify(process.env.__FRAMEWORK_VERSION__),
-          'process.env.__ICESTARK_TYPE__':  JSON.stringify(appType)
-        }]);
-
-    // set alias for default layout
-    config.resolve.alias.set('$ice/Layout', hasDefaultLayout ? path.join(rootDir, 'src/layouts') : layoutPath);
-    // set alias for icestark
-    ['@ice/stark', '@ice/stark-app'].forEach((pkgName) => {
-      config.resolve.alias.set(pkgName, require.resolve(pkgName));
-    });
-
-    // `uniqueName` is shared by framework and child
-    // Remove output.jsonpFunction in webpack5 see: https://webpack.js.org/blog/2020-10-10-webpack-5-release/#automatic-unique-naming
-    if (!isWebpack5 && uniqueName) {
-      config.output.jsonpFunction(`webpackJsonp_${uniqueName}`);
-    }
-
-    // umd config
-    if (appType === 'child' && umd) {
-      const libraryName = library as string || pkg.name as string || 'microApp';
-      config.output
-        .library(libraryName)
-        .libraryTarget('umd');
-
-      // collect entry
-      const entryList = [];
-      Object.keys(entries).forEach((key) => {
-        const entryValues = entries[key].values();
-        // only include entry path
-        for (let i = 0; i < entryValues.length; i += 1) {
-          // filter node_modules file add by plugin
-          if (!/node_modules/.test(entryValues[i])) {
-            entryList.push(entryValues[i]);
-          }
-        }
-      });
-      // add build-plugin-microapp
-      ['jsx', 'tsx'].forEach((rule) => {
-        config.module
-          .rule(rule)
-          .use('babel-loader')
-          .tap((babelOptions) => {
-            const { plugins = [] } = babelOptions;
-            return {
-              ...babelOptions,
-              plugins: [
-                [require.resolve('./babelPluginMicroapp'), {
-                  checkEntryFile: (filename: string) => checkEntryFile(entryList, filename),
-                  libraryName,
-                  omitSetLibraryName
-                }],
-                ...plugins,
-              ],
-            };
-          });
-      });
-    }
-  });
-
-  const isVersion2 = Number(process.env.__FRAMEWORK_VERSION__[0]) > 1;
-
-  if (isVersion2) {
-    // copy type files to .ice/plugins/icestark
-    applyMethod('addPluginTemplate', {
-      template: path.join(__dirname, './types'),
-      targetDir: 'icestark/types',
-    });
-    applyMethod('addAppConfigTypes', { source: '../plugins/icestark/types', specifier: '{ IIceStark }', exportName: 'icestark?: IIceStark' });
-  } else {
-    await fse.copy(path.join(__dirname, '..', 'src/types/index.ts'), path.join(iceTempPath, 'types/icestark.ts'));
-    await fse.copy(path.join(__dirname, '..', 'src/types/base.ts'), path.join(iceTempPath, 'types/base.ts'));
-    applyMethod('addAppConfigTypes', { source: './types/icestark', specifier: '{ IIceStark }', exportName: 'icestark?: IIceStark' });
+    root = render({ runtimeOptions });
   }
-};
+  await root;
+}
+export async function unmount(props) {
+  root?.then((res) => res.unmount());
+  await app?.icestark?.unmount?.(props);
+  // Reset root to null when app unmount.
+  root = null;
+}`;
+});
+    } else {
+      // Plugin icestark do not support ssr yet.
+      modifyUserConfig('ssr', false);
+      modifyUserConfig('ssg', false);
+    }
+  },
+  runtime: `${PLUGIN_NAME}/esm/runtime/${type === 'framework' ? 'framework' : 'child'}`,
+});
 
 export default plugin;

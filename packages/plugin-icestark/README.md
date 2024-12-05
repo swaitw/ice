@@ -1,58 +1,76 @@
 # plugin-icestark
 
-> Easy use [`icestark`](https://github.com/ice-lab/icestark) in icejs.
+> Easy use [`icestark`](https://github.com/ice-lab/icestark) in [icejs](https://github.com/alibaba/ice).
 
 ## Usage
 
+### Install
+
+```bash
+npm i -D @ice/plugin-icestark
+```
+
 ### Framework Application
 
-Through `appConfig` configuration of your framework application.
+Configurate plugin to your `ice.config.mts`:
 
-```js
-const appConfig = {
-  ...
-  icestark: {
-    type: 'framework',
-    getApps: () => {
-      return [{
-        path: '/seller',
-        title: '商家平台',
-        url: [
-          '//ice.alicdn.com/icestark/child-seller-react/index.js',
-          '//ice.alicdn.com/icestark/child-seller-react/index.css',
-        ],
-      }];
-    },
-  },
-};
+```ts title="ice.config.mts"
+import { defineConfig } from '@ice/app';
+import icestark from '@ice/plugin-icestark';
+
+export default defineConfig(() => ({
+  plugins: [
+    icestark({ type: 'framework' }),
+  ],
+}));
+```
+
+Through export `icestark` configuration of your framework application.
+
+```ts title="src/app.ts"
+import { defineFrameworkConfig } from '@ice/plugin-icestark/esm/types';
+
+export const icestark = defineFrameworkConfig(() => ({
+  getApps: () => ([]),
+}));
 ```
 
 **Options:**
-
- - `type`: config framework to enable Framework application
  - `getApps`: get sub-application information, support async function
  - `appRouter`
    - `ErrorComponent`: error component
    - `LoadingComponent`: loading component
    - `NotFoundComponent`: 404 not found component
-   - `shouldAssetsRemove`
- - `removeRoutesLayout`: remove global Layout when config `true`
- - `AppRoute`: custom AppRoute component
- - `Layout`: specify Framework application Layout, use `layouts/index` as default if exisit
+   - `shouldAssetsRemove`: check assets if it should be removed
+ - `layout`: specify Framework application Layout
 
 ### Sub-application
 
-modify `appConfig`:
+Configurate plugin to your `ice.config.mts`:
 
-```js
+```ts title="ice.config.mts"
+import { defineConfig } from '@ice/app';
+import icestark from '@ice/plugin-icestark';
+
+export default defineConfig(() => ({
+  plugins: [
+    icestark({ type: 'child' }),
+  ],
+}));
+```
+
+modify `icestark` exports in `src/app.ts`:
+
+```ts title="src/app.ts"
 // app.ts
-const appConfig = {
-  ...
-  icestark: {
-    type: 'child',
-  },
-};
+import { defineChildConfig } from '@ice/plugin-icestark/esm/types';
+
+export const icestark = defineChildConfig(() => ({
+  mount: () => {},
+  unmount: () => {},
+}));
 ```
 
 **Options:**
- - `type`: config `child` to enable Sub-application
+ - `mount`: excute before Sub-application mounted
+ - `unmount`: excute after Sub-application unmounted

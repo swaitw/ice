@@ -1,0 +1,41 @@
+{
+  "name": "@ice/plugin-unocss",
+  "version": "1.1.0",
+  "description": "A plugin for enable unocss in your app based on `@ice/app`",
+  "license": "MIT",
+  "type": "module",
+  "exports": {
+    ".": {
+      "types": "./esm/index.d.ts",
+      "import": "./esm/index.js",
+      "default": "./esm/index.js"
+    }
+  },
+  "main": "./esm/index.js",
+  "types": "./esm/index.d.ts",
+  "files": [
+    "esm",
+    "!esm/**/*.map",
+    "*.d.ts",
+    "uno.css"
+  ],
+  "dependencies": {
+    "@unocss/preset-uno": "^0.58.5",
+    "@unocss/postcss": "^0.58.5"
+  },
+  "devDependencies": {
+    "@unocss/core": "^0.58.5",
+    "@ice/app": "workspace:^"
+  },
+  "repository": {
+    "type": "http",
+    "url": "https://github.com/alibaba/ice/tree/master/packages/plugin-unocss"
+  },
+  "scripts": {
+    "watch": "tsc -w --sourceMap",
+    "build": "tsc"
+  },
+  "publishConfig": {
+    "access": "public"
+  }
+}

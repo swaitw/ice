@@ -1,14 +1,17 @@
 # Changelog
 
-## 2.0.0
+## 1.0.2
 
-- [feat] migrate runtime api
-- [feat] **BREAKING:** Use React Context API instead of state management ability of icestore.
+### Patch Changes
 
-## 1.7.4
+- b8b1d5e4: fix: sourceMap url in prod files but not publish with sourceMap file
 
-- [feat] support jsx-runtime
+## 1.0.1
 
-## 1.7.3
+### Patch Changes
 
-- [chore] publish source code of runtime
+- 56fb406e: fix: support types definition without specify esm folder
+
+## 1.0.0-rc.3
+
+- [feat] support initialize auth by app data.

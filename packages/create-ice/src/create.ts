@@ -1,14 +1,17 @@
-import * as inquirer from 'inquirer';
-import * as fs from 'fs-extra';
+import inquirer from 'inquirer';
+import fs from 'fs-extra';
+import chalk from 'chalk';
 import { checkAliInternal } from 'ice-npm-utils';
 import { downloadAndGenerateProject, checkEmpty } from '@iceworks/generate-project';
-
-// eslint-disable-next-line
-const chalk = require('chalk');
 
 interface ITemplate {
   npmName: string;
   description?: string;
+}
+interface EjsOptions {
+  iceConfig?: Record<string, any>;
+  appConfig?: Record<string, any>;
+  esLintConfigOptions?: string;
 }
 
 export default async function create(dirPath: string, templateName: string, dirname: string): Promise<void> {
@@ -24,14 +27,52 @@ export default async function create(dirPath: string, templateName: string, dirn
       type: 'confirm',
       name: 'go',
       message:
-        'The existing file in the current directory. Are you sure to continue ？',
+        'The existing file in the current directory. Are you sure to continue?',
       default: false,
     });
     if (!go) process.exit(1);
   }
 
-  await downloadAndGenerateProject(dirPath, templateName);
+  let ejsOptions: EjsOptions = {
+    appConfig: null,
+  };
+  let extraDependencies: Record<string, any> = {};
+
   const isAliInternal = await checkAliInternal();
+  if (isAliInternal) {
+    ejsOptions = {
+      ...ejsOptions,
+      iceConfig: {
+        importDeclarationsStr: 'import def from \'@ali/ice-plugin-def\';\n',
+        options: {
+          pluginItemsStr: 'def(),',
+        },
+        optionsStr: `plugins: [
+          def(),
+        ],`,
+      },
+      esLintConfigOptions: `{
+        extends: ['@ali/eslint-config-att/typescript/react']
+      }`,
+    };
+
+    extraDependencies = {
+      ...extraDependencies,
+      devDependencies: {
+        ...extraDependencies?.devDependencies || {},
+        '@ali/eslint-config-att': '^1.0.0',
+        '@ali/ice-plugin-def': '^1.0.0',
+      },
+    };
+  }
+  await downloadAndGenerateProject(
+    dirPath,
+    templateName,
+    {
+      ejsOptions,
+      extraDependencies,
+    },
+  );
 
   console.log();
   console.log('Initialize project successfully.');
@@ -59,25 +100,24 @@ export default async function create(dirPath: string, templateName: string, dirn
  * @param {String} type project|material|component
  */
 async function selectTemplate(): Promise<string> {
-  const templates: ITemplate[] = [{
-    npmName: '@alifd/scaffold-simple',
-    description: 'TypeScript + No UI Components',
-  }, {
-    npmName: '@icedesign/ice-antd-scaffold',
-    description: 'TypeScript + Ant Design',
-  }, {
-    npmName: '@alifd/scaffold-lite',
-    description: 'TypeScript + Fusion Design',
-  },  {
-    npmName: '@alifd/fusion-design-pro',
-    description: 'TypeScript + Fusion Design Pro ',
-  }, {
-    npmName: '@alifd/scaffold-lite-js',
-    description: 'JavaScript + Fusion Design',
-  }, {
-    npmName: 'build-plugin-template',
-    description: 'ice.js plugin development template.'
-  }];
+  const templates: ITemplate[] = [
+    {
+      npmName: '@ice/lite-scaffold',
+      description: 'Web Lite Scaffold',
+    },
+    {
+      npmName: '@ice/antd-pro-scaffold',
+      description: 'Antd Pro Scaffold',
+    },
+    {
+      npmName: '@ice/fusion-pro-scaffold',
+      description: 'Fusion Pro Scaffold',
+    },
+    {
+      npmName: '@ice/miniapp-scaffold',
+      description: 'Miniapp Scaffold',
+    },
+  ];
   const defaultTemplate = templates[0];
 
   const answer = await inquirer.prompt({
@@ -91,7 +131,7 @@ async function selectTemplate(): Promise<string> {
         name: item.description,
         value: item.npmName,
       };
-    })
+    }),
   });
 
   return answer.template;

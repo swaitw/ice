@@ -1,0 +1,41 @@
+{
+  "name": "@ice/miniapp-runtime",
+  "version": "1.2.1",
+  "description": "ice runtime for miniapps.",
+  "type": "module",
+  "types": "./esm/index.d.ts",
+  "main": "./esm/index.js",
+  "exports": {
+    ".": "./esm/index.js",
+    "./types": "./esm/types.js",
+    "./app": "./esm/app/index.js"
+  },
+  "files": [
+    "esm",
+    "!esm/**/*.map"
+  ],
+  "author": "ICE",
+  "license": "MIT",
+  "repository": "alibaba/ice",
+  "bugs": "https://github.com/alibaba/ice/issues",
+  "homepage": "https://v3.ice.work",
+  "scripts": {
+    "watch": "tsc -w --sourceMap",
+    "build": "tsc"
+  },
+  "sideEffects": false,
+  "dependencies": {
+    "@ice/shared": "workspace:^",
+    "@ice/runtime": "workspace:^",
+    "miniapp-history": "^0.1.7"
+  },
+  "devDependencies": {
+    "@types/react": "^18.0.0",
+    "history": "^5.3.0",
+    "react": "^18.1.0",
+    "react-dom": "^18.1.0"
+  },
+  "publishConfig": {
+    "access": "public"
+  }
+}

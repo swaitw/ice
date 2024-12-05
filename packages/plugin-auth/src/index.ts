@@ -1,27 +1,23 @@
-import * as path from 'path';
-import { IPluginAPI } from 'build-scripts';
+import type { Plugin } from '@ice/app/types';
 
-const PLUGIN_AUTH_DIR = 'auth';
+const PLUGIN_NAME = '@ice/plugin-auth';
 
-export default async function (api: IPluginAPI) {
-  const { getValue, onGetWebpackConfig, applyMethod } = api;
-  const iceTemp = getValue<string>('TEMP_PATH');
+const plugin: Plugin = () => ({
+  name: PLUGIN_NAME,
+  setup: ({ generator }) => {
+  // Register API: `import { useAuth, withAuth } from 'ice';`
+    generator.addExport({
+      specifier: ['withAuth', 'useAuth'],
+      source: '@ice/plugin-auth/runtime',
+    });
 
-  // 复制模板到 .ice/auth 目录下
-  const templateSourceDir = path.join(__dirname, '../template');
-  applyMethod('addPluginTemplate', templateSourceDir);
+    generator.addRouteTypes({
+      specifier: ['ConfigAuth'],
+      type: true,
+      source: '@ice/plugin-auth/types',
+    });
+  },
+  runtime: `${PLUGIN_NAME}/runtime`,
+});
 
-  onGetWebpackConfig((config) => {
-    config.resolve.alias.set('$ice/auth', path.join(iceTemp, 'plugins', PLUGIN_AUTH_DIR, 'index.tsx'));
-  });
-
-  // 导出接口
-  // import { useAuth, withAuth } from 'ice';
-  applyMethod('addExport', { source: './plugins/auth', importSource: '$$ice/plugins/auth', exportMembers: ['withAuth', 'useAuth'] });
-
-  // 设置类型
-  // export interface IAppConfig {
-  //   auth?: IAuth;
-  // }
-  applyMethod('addAppConfigTypes', { source: '../plugins/auth/types', specifier: '{ IAuth }', exportName: 'auth?: IAuth' });
-}
+export default plugin;

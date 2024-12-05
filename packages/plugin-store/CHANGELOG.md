@@ -1,53 +1,37 @@
-# Changelog
+# CHANGELOG
 
-## 2.0.6
+## 1.1.2
 
-- [fix] update dependencies version
+### Patch Changes
 
-## 2.0.5
+- b8b1d5e4: fix: sourceMap url in prod files but not publish with sourceMap file
 
-- [fix] remove unnecessary import redirection
+## 1.1.1
 
-## 2.0.4
+### Patch Changes
 
-- [fix] store error in vite HMR
+- 5266fedc: fix: import store source before swc compiler
 
-## 2.0.3
+## 1.1.0
 
-- [fix] nested routes not render in vite mode
+### Minor Changes
 
-## 2.0.2
+- 1ed81fee: feat: refactor runtime api
 
-- [fix] not restart after first use store
-- [fix] not regenerate webpack cache after first use store
-- [fix] `AppStore.Provider` ts type error
+## 1.0.3
 
-## 2.0.1
+### Patch Changes
 
-- [fix] display warning message but the page has no store
+- 56fb406e: fix: support types definition without specify esm folder
 
-## 2.0.0
+## 1.0.2
 
-- [feat] migrate plugin api
-- [feat] upgrade @ice/store to 2.x
-- [refactor] not support create store automatically
-- [refactor] remove appJSON loader
-- [refactor] modify `getRoutes` API param from `tempDir` to `tempPath`
-- [refactor] use webpack loader to replace route path
+- fix: improve code compatibility
 
-## 1.9.7
+## 1.0.1
 
-- [fix] can't find an existed store file in windows
+- fix: compatible with win32
 
-## 1.9.6
+## 1.0.0
 
-- [feat] support reset page store after router switch  
-- [feat] support watch store.ts change
-
-## 1.9.5
-
-- [chore] publish source code of runtime
-
-## 1.9.4
-
-- [feat] compatible with jsx runtime syntax
+- feat: init plugin store

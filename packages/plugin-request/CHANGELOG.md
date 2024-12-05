@@ -1,21 +1,25 @@
-# Changelog
+# CHANGELOG
 
-## 2.0.0
+## 1.0.3
 
-- [feat] migrate plugin api and refactor runtime folder
+### Patch Changes
 
-## 1.7.8
+- 570205a8: chore: fix the default type of TParams
 
-- [feat] provide types lint
+## 1.0.2
 
-## 1.7.7
+### Patch Changes
 
-- [feat] support axios cancel
+- b8b1d5e4: fix: sourceMap url in prod files but not publish with sourceMap file
 
-## 1.7.6
+## 1.0.1
 
-- [chore] bump version
+### Patch Changes
 
-## 1.7.5
+- 56fb406e: fix: support types definition without specify esm folder
+- dae91e21: fix: request and useRequest type
+  fix: useRequest usage
 
-- [chore] ts ignore
+## 1.0.0
+
+- The initial version of the plugin.

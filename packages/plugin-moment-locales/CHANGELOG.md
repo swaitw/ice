@@ -1,17 +1,17 @@
 # Changelog
 
-## 0.1.3
+## 1.0.2
 
-- [fix] pre build moment locales
+### Patch Changes
 
-## 0.1.2
+- b8b1d5e4: fix: sourceMap url in prod files but not publish with sourceMap file
 
-- [fix] generate sourceMap if necessary
+## 1.0.1
 
-## 0.1.1
+### Patch Changes
 
-- [feat] support inject moment locales in vite mode
+- 56fb406e: fix: support types definition without specify esm folder
 
-## 0.1.0
+## 1.0.0
 
-- [feat] init plugin
+- [feat] support config locales of moment.

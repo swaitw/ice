@@ -1,0 +1,14 @@
+<% if (globalStyle) {-%>
+import '<%= globalStyle %>'
+<% } -%>
+import { definePageConfig, defineRunApp } from './type-defines';
+<%- framework.imports %>
+export {
+  definePageConfig,
+  defineRunApp,
+  <% if (framework.exports) { -%><%- framework.exports %><% } -%>
+  <% if (framework.targetExports) { -%><%- framework.targetExports %><% } -%>
+
+};
+
+export * from './types';

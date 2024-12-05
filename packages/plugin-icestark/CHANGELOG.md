@@ -1,65 +1,43 @@
 # Changelog
 
-## 2.5.0
+## 1.1.1
 
-- [feat] use `vite-plugin-index-html` as a substitute in Vite mode.
+### Patch Changes
 
-## 2.4.2
+- b8b1d5e4: fix: sourceMap url in prod files but not publish with sourceMap file
 
-- [fix] provide initial `pathname` with `location`. ([#4885](https://github.com/alibaba/ice/issues/4885))
-- [fix] more elegant way to use `registerAppEnter` & `registerAppLeave`.
+## 1.1.0
 
-## 2.4.1
+### Minor Changes
 
-- [chore] solve typescript errors when enabling `tsChecker: true`. ([#4800](https://github.com/alibaba/ice/issues/4800))
-- [fix] avoid RootApp re-rendering when route changes. ([#427](https://github.com/ice-lab/icestark/issues/427))
-- [chore] provide more prompt information.
+- 1ed81fee: feat: refactor runtime api
 
-## 2.4.0
+## 1.0.5
 
-- [feat] an extra `type` option is configured to distinguish between framework and child. Util now, `type` in `appconfig.icestark` is deprecated.
-- [feat] append icestark lifecycles automatically using babel parser.
+### Patch Changes
 
-## 2.3.0
+- 42d18539: fix: ignore props pass by other micro app framework
 
-- [feat] migrate runtime api
-- [feat] upgrade build-scripts
-- [feat] support es module out of box
+## 1.0.4
 
-## 2.2.1
+### Patch Changes
 
-- [fix] move all identifiers to visitor to avoid wrong execution results.
+- dec56a33: fix: avoid remount when app mount in other micro app framework
 
-# 2.2.0
+## 1.0.3
 
-- [feat] support setting custom lifecycles. ([#337](https://github.com/ice-lab/icestark/issues/337))
-- [fix] append lifecycles for other framework.
+### Patch Changes
 
-# 2.1.0
+- 56fb406e: fix: support types definition without specify esm folder
 
-- [fix] get rendering container through `props` instead of `getMountNode`. ([#227](https://github.com/ice-lab/icestark/issues/227))
-- [feat] support `omitSetLibraryName` for removing default setLibraryName.
+## 1.0.2
 
-# 2.0.9
+- [feat] support lifecycle of `bootstrap` for qiankun micro app.
 
-- [fix] compatible with the case which icejs version is locked
+## 1.0.1
 
-# 2.0.8
+- [fix] modify basename when render as a child app.
 
-- [fix] make `router.basename` work in a non-icestark context. ([#4234](https://github.com/alibaba/ice/issues/4234))
-- [fix] use wrapperRouterRender when render child app
+## 1.0.0
 
-## 2.0.7
-
-- [chore] publish source code of runtime.
-- [feat] turn lifecycle function of icestark into `async`. ([#4190](https://github.com/alibaba/ice/pull/4190))
-- [fix] set IAppRouter alias with AppRouterProps. ([#4192](https://github.com/alibaba/ice/pull/4192))
-- [fix] fix wrong ast parser of `@ice/stark-app` & `react-dom`. ([#4193](https://github.com/alibaba/ice/pull/4193))
-
-## 2.0.6
-
-- [feat] add setLibraryName for umd. ([#240](https://github.com/ice-lab/icestark/issues/240))
-
-## 2.0.5
-
-- [feat] inject bootstrap lifecyle
+- [feat] plugin for micro-fontends, support both `Framework app` and `Sub app`.

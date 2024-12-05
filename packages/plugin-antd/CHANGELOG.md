@@ -1,21 +1,19 @@
 # Changelog
 
-## 0.1.4
+## 1.0.2
 
-- [fix] remove alias config of `~` for vite
+### Patch Changes
 
-## 0.1.3
+- b8b1d5e4: fix: sourceMap url in prod files but not publish with sourceMap file
+- Updated dependencies [b8b1d5e4]
+  - @ice/style-import@1.0.1
 
-- [feat] option `disableModularImport` for disable modular import of antd
+## 1.0.1
 
-## 0.1.2
+### Patch Changes
 
-- [feat] support style import in mode vite
+- 56fb406e: fix: support types definition without specify esm folder
 
-## 0.1.1
+## 1.0.0
 
-- [feat] compatile with less-loader options
-
-## 0.1.0
-
-- [feat] init plugin
+- [feat] `plugin-antd` to support `themeConfig`

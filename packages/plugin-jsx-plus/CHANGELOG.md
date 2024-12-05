@@ -1,13 +1,29 @@
 # Changelog
 
-## 0.1.4
+## 1.0.4
 
-- [feat] optimize babel transform for jsx+ in mode vite
+### Patch Changes
 
-## 0.1.3
+- aaea501d: fix: allow decorators-legacy syntax in js file
 
-- [feat] support jsx+ syntax in Vite mode ([#4768](https://github.com/alibaba/ice/issues/4768)).
+## 1.0.3
 
-## 0.1.2
+### Patch Changes
 
-- [fix] fix jsx+ `for list` error in tsx file.
+- b8b1d5e4: fix: sourceMap url in prod files but not publish with sourceMap file
+
+## 1.0.2
+
+### Patch Changes
+
+- 56fb406e: fix: support types definition without specify esm folder
+
+## 1.0.1
+
+### Patch Changes
+
+- 5cc9ce45: Enable ignoreModuleCheck to support compat rax.
+
+## 1.0.0
+
+Initial implementation.

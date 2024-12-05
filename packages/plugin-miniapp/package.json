@@ -1,0 +1,64 @@
+{
+  "name": "@ice/plugin-miniapp",
+  "version": "1.2.1",
+  "description": "ice.js plugin for miniapp.",
+  "license": "MIT",
+  "type": "module",
+  "exports": {
+    ".": {
+      "types": "./esm/index.d.ts",
+      "import": "./esm/index.js",
+      "default": "./esm/index.js"
+    },
+    "./runtime": {
+      "types": "./esm/runtime/index.d.ts",
+      "import": "./esm/runtime/index.js",
+      "default": "./esm/runtime/index.js"
+    },
+    "./esm/runtime": {
+      "types": "./esm/runtime/index.d.ts",
+      "import": "./esm/runtime/index.js",
+      "default": "./esm/runtime/index.js"
+    },
+    "./targets/*": "./esm/targets/*"
+  },
+  "main": "./esm/index.js",
+  "types": "./esm/index.d.ts",
+  "files": [
+    "esm",
+    "!esm/**/*.map",
+    "template"
+  ],
+  "scripts": {
+    "watch": "tsc -w --sourceMap",
+    "build": "tsc"
+  },
+  "dependencies": {
+    "@ice/bundles": "workspace:*",
+    "@ice/miniapp-loader": "workspace:*",
+    "@ice/miniapp-react-dom": "workspace:*",
+    "@ice/miniapp-runtime": "workspace:*",
+    "@ice/route-manifest": "workspace:*",
+    "@ice/shared": "workspace:*",
+    "acorn-walk": "^8.2.0",
+    "chalk": "^4.0.0",
+    "consola": "^2.15.3",
+    "fast-glob": "^3.2.11",
+    "fs-extra": "^10.0.0",
+    "html-minifier": "^4.0.0",
+    "regenerator-runtime": "^0.11.0",
+    "sax": "^1.2.4"
+  },
+  "devDependencies": {
+    "@ice/app": "^3.5.1",
+    "@ice/runtime": "^1.5.1",
+    "webpack": "^5.88.0"
+  },
+  "repository": {
+    "type": "http",
+    "url": "https://github.com/alibaba/ice/tree/master/packages/plugin-miniapp"
+  },
+  "publishConfig": {
+    "access": "public"
+  }
+}

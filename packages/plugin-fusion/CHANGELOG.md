@@ -1,94 +1,48 @@
 # Changelog
 
-## 0.1.22
+## 1.1.0
 
-- [fix] remove alias config of `~` for vite
+### Minor Changes
 
-## 0.1.21
+- 79c32a77: feat: optimize function theme injection
 
-- [feat] option `disableModularImport` for disable modular import of `@alifd/next`
+### Patch Changes
 
-## 0.1.20
+- Updated dependencies [79c32a77]
+  - @ice/style-import@1.1.0
 
-- [fix] icon path in win32
+## 1.0.5
 
-## 0.1.19
+### Patch Changes
 
-- [fix] theme icon in vite mode
+- 9f455628: fix: compatible with win32 when custom icon file
+- 9f455628: chore: add warning when options of plugin is not correct
 
-## 0.1.18
+## 1.0.4
 
-- [feat] support style import in mode vite
+### Patch Changes
 
-## 0.1.17
+- b8b1d5e4: fix: sourceMap url in prod files but not publish with sourceMap file
+- Updated dependencies [b8b1d5e4]
+  - @ice/style-import@1.0.1
 
-- [fix] compatible with umd and other targets.
+## 1.0.3
 
-## 0.1.16
+### Patch Changes
 
-- [fix] compatible with umd export when external Next
+- 1e6a015d: fix: add icon style when config themePackage
 
-## 0.1.15
+## 1.0.2
 
-- [fix] remove useless string in calculated colors
-- [chore] remove err stack when config slient
+### Patch Changes
 
-## 0.1.14
+- 56fb406e: fix: support types definition without specify esm folder
+- c7cfed91: fix: compile non-js file when use plugin fusion
 
-- [feat] support `cssVariable` to enable css variables
+## 1.0.1
 
-## 0.1.13
+- [fix] error occur when use plugin without config `theme`
 
-- [fix] bump dependencies version
-- [feat] auto detect sass implementation
-- [feat] external next styles imported by depended components
+## 1.0.0
 
-## 0.1.12
-
-- [feat] compatible with webpack 5
-
-## 0.1.11
-
-- [fix] error condition of color variables
-- [fix] bump verison of ice-skin-loader
-- [fix] ignore externals rule and babel-plugin-import rule when build umd
-
-## 0.1.10
-
-- [feat] support color names
-
-## 0.1.9
-
-- [fix] compatible with component dist build
-
-## 0.1.8
-- [feat] support `componentOptions` to load h5 component in mobile mode
-- [feat] support option `px2vwOptions` to pass options to postcssPlugin
-
-## 0.1.7
-
-- [feat] support option `usePx2Vw` to transform css unit
-
-## 0.1.6
-
-- [feat] support option `importOptions` to specify babel-plugin-import options of `@alifd/next`
-
-## 0.1.5
-
-- [feat] support external fusion components
-
-## 0.1.4
-
-- [fix] transform icon content to unicode
-
-## 0.1.3
-
-- [fix] check WebpackPluginImport before config
-
-## 0.1.2
-
-- [feat] support unite next lib
-
-## 0.1.1
-
-- [fix] variable file for style plugin
+- [feat] support use fusion component in ice.js framework.

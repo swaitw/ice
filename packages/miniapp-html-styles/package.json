@@ -1,0 +1,23 @@
+{
+  "name": "@ice/miniapp-html-styles",
+  "version": "1.0.0",
+  "description": "html styles for ice miniapp",
+  "main": "./html.css",
+  "exports": {
+    "./html": "./html.css",
+    "./html5": "./html5.css"
+  },
+  "files": [
+    "html.css",
+    "html5.css"
+  ],
+  "author": "ICE",
+  "license": "MIT",
+  "repository": "alibaba/ice",
+  "bugs": "https://github.com/alibaba/ice/issues",
+  "homepage": "https://v3.ice.work",
+  "sideEffects": false,
+  "publishConfig": {
+    "access": "public"
+  }
+}
